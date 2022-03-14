@@ -21,10 +21,4 @@ abstract class UserApiClient {
         _handler.next(options);
       }
     })));
-
-  @GET(NetworkConstants.urlAccountDetails)
-  Future<ApiResponse<User>> getLoggedInUserData();
-
-  @POST(NetworkConstants.urlLogout)
-  Future<ApiResponse<dynamic>> userLogout();
 }

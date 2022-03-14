@@ -43,37 +43,15 @@ class UiConstants {
       fontFamily: 'WorkSans',
       fontWeight: FontWeight.bold);
 
-  static const InputBorder inoutBorderInputDecoration = OutlineInputBorder(
-    borderRadius: BorderRadius.all(Radius.circular(30.0)),
-    borderSide: BorderSide(
-      color: colorPrimary,
-      width: 1.0,
-    ),
-  );
-
-  static const double elevationTextButton = 8.0;
-  static const double elevationDisabledTextButton = 0.0;
-
   static const Radius _radiusTextButtonCorners = Radius.circular(50.0);
   static const Radius _radiusOutlinedButtonCorners = Radius.circular(50.0);
 
   static const OutlinedBorder outlinedBorderTextButtonShape =
       RoundedRectangleBorder(
           borderRadius: BorderRadius.all(_radiusTextButtonCorners));
-  static const OutlinedBorder outlinedBorderOutlinedButtonShape =
-      RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(_radiusOutlinedButtonCorners));
-
-  static const Size sizeMinimumTextButton = Size(100.0, 42.0);
-  static const Size sizeMinimumOutlinedButton = Size(100.0, 42.0);
 
   static const EdgeInsets edgeInsetsDefaultPaddingTextButton =
       EdgeInsets.symmetric(horizontal: 20.0, vertical: 16.0);
-  static const EdgeInsets edgeInsetsDefaultPaddingOutlinedButton =
-      EdgeInsets.symmetric(horizontal: 20.0, vertical: 16.0);
-
-  static const BorderSide borderSideOutlinedButtonSide =
-      BorderSide(color: colorPrimary, width: 2.0);
 
   static const String stringEmpty = '';
   static const String stringSpace = ' ';

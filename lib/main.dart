@@ -10,7 +10,7 @@ import 'package:movies_task/models/utilities/localizations/locales_constants.dar
 import 'package:movies_task/models/utilities/localizations/localizations_delegate.dart';
 import 'package:movies_task/models/utilities/themes/theme_dark.dart';
 import 'package:movies_task/models/utilities/themes/theme_light.dart';
-import 'package:movies_task/ui/screens/home_screen.dart';
+import 'package:movies_task/ui/screens/home/home_screen.dart';
 
 final GlobalKey<NavigatorState> navigatorKey =
     GlobalKey<NavigatorState>(debugLabel: "Main Navigator");

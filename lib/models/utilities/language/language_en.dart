@@ -9,6 +9,18 @@ class LanguageEn extends Languages {
   LanguageEn._internal();
 
   @override
-  // TODO: implement test
-  String get test => 'test';
+  // TODO: implement welcomeBack
+  String get welcomeBack => 'Welcome Back';
+
+  @override
+  // TODO: implement email
+  String get email => 'Email';
+
+  @override
+  // TODO: implement login
+  String get login => 'Login';
+
+  @override
+  // TODO: implement password
+  String get password => 'Password';
 }
