@@ -18,27 +18,23 @@ class _AuthenticationApiClient implements AuthenticationApiClient {
   String? baseUrl;
 
   @override
-  Future<ApiResponse<String>> createRequestToken({required apiKey}) async {
+  Future<ApiResponse> createRequestToken({required apiKey}) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{r'api_key': apiKey};
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
     final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<ApiResponse<String>>(
+        _setStreamType<ApiResponse>(
             Options(method: 'GET', headers: _headers, extra: _extra)
                 .compose(_dio.options, '/authentication/token/new',
                     queryParameters: queryParameters, data: _data)
                 .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
-    final value = ApiResponse<String>.fromJson(
-      _result.data!,
-      (json) => json as String,
-    );
+    final value = ApiResponse.fromJson(_result.data!);
     return value;
   }
 
   @override
-  Future<ApiResponse<String>> createSession(
-      {required apiKey, required body}) async {
+  Future<ApiResponse> createSession({required apiKey, required body}) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{r'api_key': apiKey};
     final _headers = <String, dynamic>{
@@ -49,7 +45,7 @@ class _AuthenticationApiClient implements AuthenticationApiClient {
     final _data = <String, dynamic>{};
     _data.addAll(body);
     final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<ApiResponse<String>>(Options(
+        _setStreamType<ApiResponse>(Options(
                 method: 'POST',
                 headers: _headers,
                 extra: _extra,
@@ -57,16 +53,12 @@ class _AuthenticationApiClient implements AuthenticationApiClient {
             .compose(_dio.options, '/authentication/session/new',
                 queryParameters: queryParameters, data: _data)
             .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
-    final value = ApiResponse<String>.fromJson(
-      _result.data!,
-      (json) => json as String,
-    );
+    final value = ApiResponse.fromJson(_result.data!);
     return value;
   }
 
   @override
-  Future<ApiResponse<User>> validateLogin(
-      {required apiKey, required body}) async {
+  Future<ApiResponse> validateLogin({required apiKey, required body}) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{r'api_key': apiKey};
     final _headers = <String, dynamic>{
@@ -77,7 +69,7 @@ class _AuthenticationApiClient implements AuthenticationApiClient {
     final _data = <String, dynamic>{};
     _data.addAll(body);
     final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<ApiResponse<User>>(Options(
+        _setStreamType<ApiResponse>(Options(
                 method: 'POST',
                 headers: _headers,
                 extra: _extra,
@@ -85,10 +77,7 @@ class _AuthenticationApiClient implements AuthenticationApiClient {
             .compose(_dio.options, '/authentication/token/validate_with_login',
                 queryParameters: queryParameters, data: _data)
             .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
-    final value = ApiResponse<User>.fromJson(
-      _result.data!,
-      (json) => User.fromJson(json as Map<String, dynamic>),
-    );
+    final value = ApiResponse.fromJson(_result.data!);
     return value;
   }
 

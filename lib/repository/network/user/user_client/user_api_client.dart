@@ -23,7 +23,7 @@ abstract class UserApiClient {
     })));
 
   @GET(NetworkConstants.urlAccount)
-  Future<ApiResponse<User>> getAccountDetails(
+  Future<User> getAccountDetails(
       {@Query(NetworkConstants.keySessionId) required String sessionId,
       @Query(NetworkConstants.keyApiKey) required String apiKey});
 }

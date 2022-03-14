@@ -18,6 +18,11 @@ class NetworkConstants {
   static const String keySessionId = 'session_id';
   static const String keyApiKey = 'api_key';
   static const String keyPage = 'page';
+  static const String keyStatusMessage = 'status_message';
+  static const String keyStatusCode = 'status_code';
+  static const String keyResult = 'results';
+  static const String keyTotalPages = 'total_pages';
+  static const String keyTotalResults = 'total_results';
 
   static const String apiKey = '31521ab741626851b73c684539c33b5a';
 

@@ -18,8 +18,7 @@ class _UserApiClient implements UserApiClient {
   String? baseUrl;
 
   @override
-  Future<ApiResponse<User>> getAccountDetails(
-      {required sessionId, required apiKey}) async {
+  Future<User> getAccountDetails({required sessionId, required apiKey}) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{
       r'session_id': sessionId,
@@ -27,16 +26,12 @@ class _UserApiClient implements UserApiClient {
     };
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
-    final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<ApiResponse<User>>(
-            Options(method: 'GET', headers: _headers, extra: _extra)
-                .compose(_dio.options, '/account',
-                    queryParameters: queryParameters, data: _data)
-                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
-    final value = ApiResponse<User>.fromJson(
-      _result.data!,
-      (json) => User.fromJson(json as Map<String, dynamic>),
-    );
+    final _result = await _dio.fetch<Map<String, dynamic>>(_setStreamType<User>(
+        Options(method: 'GET', headers: _headers, extra: _extra)
+            .compose(_dio.options, '/account',
+                queryParameters: queryParameters, data: _data)
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = User.fromJson(_result.data!);
     return value;
   }
 

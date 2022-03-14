@@ -5,7 +5,6 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:movies_task/models/bloc/movies_bloc/movies_bloc.dart';
 import 'package:movies_task/models/bloc/settings_bloc/settings_bloc.dart';
 import 'package:movies_task/models/bloc/settings_bloc/settings_bloc_state.dart';
-import 'package:movies_task/models/bloc/user_bloc/user_bloc.dart';
 import 'package:movies_task/models/utilities/language/languages.dart';
 import 'package:movies_task/models/utilities/localizations/locales_constants.dart';
 import 'package:movies_task/models/utilities/localizations/localizations_delegate.dart';
@@ -33,9 +32,6 @@ class MyApp extends StatelessWidget {
       providers: [
         BlocProvider<SettingsBloc>(
           create: (ctx) => SettingsBloc(),
-        ),
-        BlocProvider<UserBloc>(
-          create: (ctx) => UserBloc(),
         ),
         BlocProvider<MoviesBloc>(
           create: (ctx) => MoviesBloc(),

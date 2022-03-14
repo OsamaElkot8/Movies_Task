@@ -6,52 +6,19 @@ part of 'api_response.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-ApiResponse<T> _$ApiResponseFromJson<T>(
-  Map<String, dynamic> json,
-  T Function(Object? json) fromJsonT,
-) =>
-    ApiResponse<T>(
-      status: $enumDecodeNullable(_$ApiStatusEnumMap, json['status']),
-      data: _$nullableGenericFromJson(json['data'], fromJsonT),
-      message: (json['message'] as Map<String, dynamic>?)?.map(
-        (k, e) => MapEntry(k, e as String),
-      ),
-      errors: (json['errors'] as Map<String, dynamic>?)?.map(
-        (k, e) => MapEntry(k, e as String),
-      ),
+ApiResponse _$ApiResponseFromJson(Map<String, dynamic> json) => ApiResponse(
+      success: json['success'] as bool?,
+      requestToken: json['request_token'] as String?,
+      statusMessage: json['status_message'] as String?,
+      statusCode: json['status_code'] as int?,
+      sessionId: json['session_id'] as String?,
     );
 
-Map<String, dynamic> _$ApiResponseToJson<T>(
-  ApiResponse<T> instance,
-  Object? Function(T value) toJsonT,
-) =>
+Map<String, dynamic> _$ApiResponseToJson(ApiResponse instance) =>
     <String, dynamic>{
-      'status': _$ApiStatusEnumMap[instance.status],
-      'data': _$nullableGenericToJson(instance.data, toJsonT),
-      'message': instance.message,
-      'errors': instance.errors,
+      'success': instance.success,
+      'request_token': instance.requestToken,
+      'status_message': instance.statusMessage,
+      'status_code': instance.statusCode,
+      'session_id': instance.sessionId,
     };
-
-const _$ApiStatusEnumMap = {
-  ApiStatus.success: 'success',
-  ApiStatus.fail: 'fail',
-  ApiStatus.notFound: 'notFound',
-  ApiStatus.parametersNotValid: 'parametersNotValid',
-  ApiStatus.applicationException: 'applicationException',
-  ApiStatus.sessionExists: 'sessionExists',
-  ApiStatus.unauthorized: 'unauthorized',
-  ApiStatus.oTPRequired: 'oTPRequired',
-  ApiStatus.emailVerifyRequired: 'emailVerifyRequired',
-};
-
-T? _$nullableGenericFromJson<T>(
-  Object? input,
-  T Function(Object? json) fromJson,
-) =>
-    input == null ? null : fromJson(input);
-
-Object? _$nullableGenericToJson<T>(
-  T? input,
-  Object? Function(T value) toJson,
-) =>
-    input == null ? null : toJson(input);

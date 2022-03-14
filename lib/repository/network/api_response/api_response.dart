@@ -1,36 +1,28 @@
 import 'package:json_annotation/json_annotation.dart';
+import 'package:movies_task/repository/network/network_constants.dart';
 
 part 'api_response.g.dart';
 
-@JsonSerializable(genericArgumentFactories: true)
-class ApiResponse<T> {
-  ApiStatus? status;
-  T? data;
-  Map<String, String>? message;
-  Map<String, String>? errors;
+@JsonSerializable()
+class ApiResponse {
+  bool? success;
+  @JsonKey(name: NetworkConstants.keyRequestToken)
+  String? requestToken;
+  @JsonKey(name: NetworkConstants.keyStatusMessage)
+  String? statusMessage;
+  @JsonKey(name: NetworkConstants.keyStatusCode)
+  int? statusCode;
+  @JsonKey(name: NetworkConstants.keySessionId)
+  String? sessionId;
 
-  ApiResponse({this.status, this.data, this.message, this.errors});
+  ApiResponse(
+      {this.success,
+      this.requestToken,
+      this.statusMessage,
+      this.statusCode,
+      this.sessionId});
 
-  factory ApiResponse.fromJson(
-      Map<String, dynamic> json, T Function(Object? json) fromJsonT) {
-    return _$ApiResponseFromJson<T>(json, fromJsonT);
-  }
-
-  Map<String, dynamic> toJson(
-    Map<String, dynamic> Function(T value) toJsonT,
-  ) {
-    return _$ApiResponseToJson<T>(this, toJsonT);
-  }
-}
-
-enum ApiStatus {
-  success,
-  fail,
-  notFound,
-  parametersNotValid,
-  applicationException,
-  sessionExists,
-  unauthorized,
-  oTPRequired,
-  emailVerifyRequired
+  factory ApiResponse.fromJson(Map<String, dynamic> json) =>
+      _$ApiResponseFromJson(json);
+  Map<String, dynamic> toJson() => _$ApiResponseToJson(this);
 }

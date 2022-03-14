@@ -17,8 +17,9 @@ class Movie {
   Map<String, dynamic> toJson() => _$MovieToJson(this);
 
   String get posterURL {
-    if (posterPath == null || posterPath!.isEmpty)
+    if (posterPath == null || posterPath!.isEmpty) {
       return UiConstants.stringEmpty;
+    }
 
     return NetworkConstants.urlMoviePosterUrl + posterPath!;
   }

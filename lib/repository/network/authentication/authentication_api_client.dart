@@ -11,18 +11,18 @@ abstract class AuthenticationApiClient {
   factory AuthenticationApiClient() => _AuthenticationApiClient(Dio());
 
   @GET(NetworkConstants.urlAuthenticationTokenNew)
-  Future<ApiResponse<String>> createRequestToken(
+  Future<ApiResponse> createRequestToken(
       {@Query(NetworkConstants.keyApiKey) required String apiKey});
 
   @POST(NetworkConstants.urlAuthenticationSessionNew)
   @Headers(NetworkConstants.requestHeader)
-  Future<ApiResponse<String>> createSession(
+  Future<ApiResponse> createSession(
       {@Query(NetworkConstants.keyApiKey) required String apiKey,
       @Body() required Map<String, dynamic> body});
 
   @POST(NetworkConstants.urlAuthenticationTokenValidateWithLogin)
   @Headers(NetworkConstants.requestHeader)
-  Future<ApiResponse<User>> validateLogin(
+  Future<ApiResponse> validateLogin(
       {@Query(NetworkConstants.keyApiKey) required String apiKey,
       @Body() required Map<String, dynamic> body});
 }

@@ -134,52 +134,52 @@ class _LoginScreenState extends State<LoginScreen> {
   void _loginButtonOnPressed() async {
     _loginButtonLoadingOn();
 
-    ApiResponse<String> _requestTokenResult = await _authenticationApiClient
+    ApiResponse _requestTokenResult = await _authenticationApiClient
         .createRequestToken(apiKey: NetworkConstants.apiKey);
 
-    if (_requestTokenResult.status != ApiStatus.success) {
+    if (_requestTokenResult.success == null || !_requestTokenResult.success!) {
       _loginButtonLoadingOff();
-      _setValidationError(error: _requestTokenResult.errors?.values.first);
+      _setValidationError(error: _requestTokenResult.statusMessage);
       return;
     }
 
-    ApiResponse<User> _validateLoginResult =
-        await _validateLogin(requestToken: _requestTokenResult.data!);
+    ApiResponse _validateLoginResult =
+        await _validateLogin(requestToken: _requestTokenResult.requestToken!);
 
-    if (_validateLoginResult.status != ApiStatus.success) {
+    if (_validateLoginResult.success == null ||
+        !_validateLoginResult.success!) {
       _loginButtonLoadingOff();
-      _setValidationError(error: _validateLoginResult.errors?.values.first);
+      _setValidationError(error: _validateLoginResult.statusMessage);
       return;
     }
 
-    ApiResponse<String> _createSessionResult =
-        await _createSession(requestToken: _validateLoginResult.data!.name!);
+    ApiResponse _createSessionResult =
+        await _createSession(requestToken: _validateLoginResult.requestToken!);
 
-    if (_createSessionResult.status != ApiStatus.success) {
+    if (_createSessionResult.success == null ||
+        !_createSessionResult.success!) {
       _loginButtonLoadingOff();
-      _setValidationError(error: _createSessionResult.errors?.values.first);
+      _setValidationError(error: _createSessionResult.statusMessage);
       return;
     }
 
-    ApiResponse<User> _accountDetailsResult =
-        await _userApiClient.getAccountDetails(
-            sessionId: _createSessionResult.data!,
-            apiKey: NetworkConstants.apiKey);
+    User _accountDetailsResult = await _userApiClient.getAccountDetails(
+        sessionId: _createSessionResult.sessionId!,
+        apiKey: NetworkConstants.apiKey);
 
-    if (_accountDetailsResult.status != ApiStatus.success) {
+    if (_accountDetailsResult.id == null) {
       _loginButtonLoadingOff();
-      _setValidationError(error: _accountDetailsResult.errors?.values.first);
+      _setValidationError(error: _accountDetailsResult.statusMessage);
       return;
     }
 
-    await _localStorage.setUserLoggedInSessionId(_createSessionResult.data!);
     await _localStorage
-        .setUserLoggedInAccountId(_accountDetailsResult.data!.id);
+        .setUserLoggedInSessionId(_createSessionResult.sessionId!);
+    await _localStorage.setUserLoggedInAccountId(_accountDetailsResult.id!);
     _navigateToHomeScreen();
   }
 
-  Future<ApiResponse<User>> _validateLogin(
-      {required String requestToken}) async {
+  Future<ApiResponse> _validateLogin({required String requestToken}) async {
     String _username = _usernameController.text,
         _password = _passwordController.text;
 
@@ -188,18 +188,17 @@ class _LoginScreenState extends State<LoginScreen> {
       NetworkConstants.keyPassword: _password,
       NetworkConstants.keyRequestToken: requestToken
     };
-    ApiResponse<User> _result = await _authenticationApiClient.validateLogin(
+    ApiResponse _result = await _authenticationApiClient.validateLogin(
         body: _validateLoginBody, apiKey: NetworkConstants.apiKey);
 
     return _result;
   }
 
-  Future<ApiResponse<String>> _createSession(
-      {required String requestToken}) async {
+  Future<ApiResponse> _createSession({required String requestToken}) async {
     Map<String, dynamic> _createSessionBody = {
       NetworkConstants.keyRequestToken: requestToken
     };
-    ApiResponse<String> _result = await _authenticationApiClient.createSession(
+    ApiResponse _result = await _authenticationApiClient.createSession(
         body: _createSessionBody, apiKey: NetworkConstants.apiKey);
 
     return _result;
