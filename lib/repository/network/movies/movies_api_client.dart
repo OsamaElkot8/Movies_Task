@@ -11,5 +11,7 @@ abstract class MoviesApiClient {
   factory MoviesApiClient() => _MoviesApiClient(Dio());
 
   @GET(NetworkConstants.urlMovieNowPlaying)
-  Future<ApiResponse<List<Movie>>> getNowPlayingMovies();
+  Future<ApiResponse<List<Movie>>> getNowPlayingMovies(
+      {@Query(NetworkConstants.keyApiKey) required String apiKey,
+      @Query(NetworkConstants.keyPage) required int page});
 }

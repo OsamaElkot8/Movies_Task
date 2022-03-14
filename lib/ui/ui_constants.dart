@@ -5,6 +5,7 @@ class UiConstants {
   static const Color colorSecondary = Colors.grey;
   static const Color colorOnSecondary = Color(0xffeeeeee);
   static const Color colorBackground = Colors.white;
+  static const Color colorTransparent = Colors.transparent;
 
   static const TextStyle textStyleHeadline2 = TextStyle(
       color: colorPrimary,
@@ -44,13 +45,12 @@ class UiConstants {
       fontWeight: FontWeight.bold);
 
   static const Radius _radiusTextButtonCorners = Radius.circular(50.0);
-  static const Radius _radiusOutlinedButtonCorners = Radius.circular(50.0);
 
   static const OutlinedBorder outlinedBorderTextButtonShape =
       RoundedRectangleBorder(
           borderRadius: BorderRadius.all(_radiusTextButtonCorners));
 
-  static const EdgeInsets edgeInsetsDefaultPaddingTextButton =
+  static const EdgeInsets edgeInsetsDefaultPaddingButton =
       EdgeInsets.symmetric(horizontal: 20.0, vertical: 16.0);
 
   static const String stringEmpty = '';
@@ -58,4 +58,7 @@ class UiConstants {
   static const String stringExclamationMark = '!';
   static const String stringColonSymbol = ':';
   static const String stringNewLine = '\n';
+
+  static const String stringDefaultImagePlaceholderPath =
+      'assets/images/image_placeholder.png';
 }

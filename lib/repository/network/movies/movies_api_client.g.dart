@@ -18,9 +18,13 @@ class _MoviesApiClient implements MoviesApiClient {
   String? baseUrl;
 
   @override
-  Future<ApiResponse<List<Movie>>> getNowPlayingMovies() async {
+  Future<ApiResponse<List<Movie>>> getNowPlayingMovies(
+      {required apiKey, required page}) async {
     const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{
+      r'api_key': apiKey,
+      r'page': page
+    };
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
     final _result = await _dio.fetch<Map<String, dynamic>>(

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:movies_task/models/utilities/enum_to_string.dart';
 import 'package:movies_task/models/utilities/language/languages.dart';
 import 'package:movies_task/models/utilities/shared_preferences/shared_preferences_constants.dart';
-import 'package:movies_task/ui/ui_constants.dart';
 import 'package:shared_preferences/shared_preferences.dart'
     as external_shared_preferences;
 
@@ -27,15 +26,23 @@ class SharedPreferences {
     return _prefs;
   }
 
-  Future<bool> setUserLoggedInToken(String accessToken) async {
+  Future<bool> setUserLoggedInSessionId(String sessionId) async {
     return await (await _getPrefs())!
-        .setString(SharedPreferencesConstants.keyAccessToken, accessToken);
+        .setString(SharedPreferencesConstants.keySessionId, sessionId);
   }
 
-  Future<String> getUserLoggedInAccessToken() async {
+  Future<String?> getUserLoggedInSessionId() async {
     return (await _getPrefs())!
-            .getString(SharedPreferencesConstants.keyAccessToken) ??
-        UiConstants.stringEmpty;
+        .getString(SharedPreferencesConstants.keySessionId);
+  }
+
+  Future<bool> setUserLoggedInAccountId(int accountId) async {
+    return await (await _getPrefs())!
+        .setInt(SharedPreferencesConstants.keyAccountId, accountId);
+  }
+
+  Future<int?> getUserLoggedInAccountId() async {
+    return (await _getPrefs())!.getInt(SharedPreferencesConstants.keyAccountId);
   }
 
   Future<bool> setLocale(Locale locale) async {

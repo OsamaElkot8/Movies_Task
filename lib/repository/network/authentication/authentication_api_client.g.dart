@@ -18,9 +18,9 @@ class _AuthenticationApiClient implements AuthenticationApiClient {
   String? baseUrl;
 
   @override
-  Future<ApiResponse<String>> createRequestToken() async {
+  Future<ApiResponse<String>> createRequestToken({required apiKey}) async {
     const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{r'api_key': apiKey};
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
     final _result = await _dio.fetch<Map<String, dynamic>>(
@@ -37,9 +37,10 @@ class _AuthenticationApiClient implements AuthenticationApiClient {
   }
 
   @override
-  Future<ApiResponse<String>> createSession(body) async {
+  Future<ApiResponse<String>> createSession(
+      {required apiKey, required body}) async {
     const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{r'api_key': apiKey};
     final _headers = <String, dynamic>{
       r'Accept': 'application/json',
       r'Content-type': 'application/json'
@@ -64,9 +65,10 @@ class _AuthenticationApiClient implements AuthenticationApiClient {
   }
 
   @override
-  Future<ApiResponse<User>> validateLogin(body) async {
+  Future<ApiResponse<User>> validateLogin(
+      {required apiKey, required body}) async {
     const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{r'api_key': apiKey};
     final _headers = <String, dynamic>{
       r'Accept': 'application/json',
       r'Content-type': 'application/json'

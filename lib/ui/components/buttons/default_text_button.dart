@@ -10,33 +10,47 @@ class DefaultTextButton extends StatelessWidget {
   final void Function()? onPressed;
   final TextStyle? textStyle;
   final Color? backGroundColor;
+  final bool? isLoading;
   const DefaultTextButton(
       {Key? key,
       required this.text,
       this.onPressed,
       this.textStyle,
-      this.backGroundColor})
+      this.backGroundColor,
+      this.isLoading = false})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final ColorScheme _colorScheme = UIHelper.getColorScheme(context);
-    final TextTheme _textTheme = UIHelper.getTextTheme(context);
 
     return MaterialButton(
       onPressed: onPressed,
       disabledColor: _colorScheme.onSecondary,
-      child: Text(
-        text,
-        style: textStyle ?? _textTheme.bodyText2,
-      ),
+      child: _childView(context),
       color: (backGroundColor ?? _colorScheme.primary),
       shape: UiConstants.outlinedBorderTextButtonShape,
       height: _minHeight,
       minWidth: _minWidth,
-      padding: UiConstants.edgeInsetsDefaultPaddingTextButton,
+      padding: UiConstants.edgeInsetsDefaultPaddingButton,
       elevation: _buttonElevation,
       disabledElevation: _buttonElevation,
+    );
+  }
+
+  Widget _childView(BuildContext context) {
+    final ColorScheme _colorScheme = UIHelper.getColorScheme(context);
+    final TextTheme _textTheme = UIHelper.getTextTheme(context);
+
+    if (isLoading!) {
+      return CircularProgressIndicator(
+        color: _colorScheme.background,
+      );
+    }
+
+    return Text(
+      text,
+      style: textStyle ?? _textTheme.bodyText2,
     );
   }
 }

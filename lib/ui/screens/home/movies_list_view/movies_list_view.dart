@@ -1,0 +1,111 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:movies_task/main.dart';
+import 'package:movies_task/models/bloc/movies_bloc/movies_bloc.dart';
+import 'package:movies_task/models/bloc/movies_bloc/movies_bloc_event.dart';
+import 'package:movies_task/models/bloc/movies_bloc/movies_bloc_state.dart';
+import 'package:movies_task/models/entities/movie/movie.dart';
+import 'package:movies_task/ui/screens/home/movies_list_view/movie_view.dart';
+import 'package:movies_task/ui/ui_constants.dart';
+
+class MoviesListView extends StatelessWidget {
+  MoviesListView({Key? key}) : super(key: key);
+
+  final List<Movie> _movies = [];
+  final ScrollController _scrollController = ScrollController();
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocConsumer<MoviesBloc, MoviesBlocState>(
+      listener: (context, state) {
+        String _snackBarMessage = UiConstants.stringEmpty;
+        switch (state.runtimeType) {
+          case MoviesIdle:
+          case MoviesLoading:
+            _snackBarMessage = appLocalizations(context).loading;
+            break;
+          case MoviesLoaded:
+            final casted = state as MoviesLoaded;
+            final List<Movie> _movies = casted.movies;
+            if (_movies.isEmpty) {
+              _snackBarMessage = appLocalizations(context).noMoreMovies;
+            }
+            break;
+          case MoviesLoadingError:
+          default:
+            _snackBarMessage = appLocalizations(context).errorGettingMovies;
+            MoviesBloc _moviesBloc = context.read<MoviesBloc>();
+            _moviesBloc.isFetching = false;
+            break;
+        }
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(_snackBarMessage),
+          ),
+        );
+        return;
+      },
+      builder: (context, state) {
+        switch (state.runtimeType) {
+          case MoviesIdle:
+          case MoviesLoading:
+            return const Center(child: CircularProgressIndicator());
+          case MoviesLoaded:
+            final casted = state as MoviesLoaded;
+            MoviesBloc _moviesBloc = context.read<MoviesBloc>();
+            _moviesBloc.isFetching = false;
+
+            ScaffoldMessenger.of(context).hideCurrentSnackBar();
+
+            final List<Movie> _moviesPerPage = casted.movies;
+            if (_moviesPerPage.isEmpty) {
+              _movies.addAll(_moviesPerPage);
+            }
+            return ListView.separated(
+              controller: _scrollController
+                ..addListener(() => _scrollControllerListener(context)),
+              itemBuilder: (context, index) => MovieView(movie: _movies[index]),
+              separatorBuilder: (context, index) => const SizedBox(height: 20),
+              itemCount: _movies.length,
+            );
+          case MoviesLoadingError:
+          default:
+            final casted = state as MoviesLoadingError;
+            return Center(
+              child: _fetchMoviesErrorView(context, error: casted.reason!),
+            );
+        }
+      },
+    );
+  }
+
+  void _scrollControllerListener(BuildContext context) {
+    MoviesBloc _moviesBloc = context.read<MoviesBloc>();
+
+    if (_scrollController.offset ==
+            _scrollController.position.maxScrollExtent &&
+        !_moviesBloc.isFetching) {
+      _fetchMovies(context);
+    }
+  }
+
+  Widget _fetchMoviesErrorView(BuildContext context, {required String error}) =>
+      Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          IconButton(
+            onPressed: () => _fetchMovies(context),
+            icon: const Icon(Icons.refresh),
+          ),
+          const SizedBox(height: 15),
+          Text(error, textAlign: TextAlign.center),
+        ],
+      );
+
+  void _fetchMovies(BuildContext context) {
+    MoviesBloc _moviesBloc = context.read<MoviesBloc>();
+    _moviesBloc
+      ..isFetching = true
+      ..add(MoviesFetch());
+  }
+}

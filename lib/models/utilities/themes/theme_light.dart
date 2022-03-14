@@ -15,7 +15,8 @@ ThemeData lightTheme = ThemeData.light().copyWith(
       headline3: UiConstants.textStyleHeadline3,
       headline4: UiConstants.textStyleHeadline4),
   appBarTheme: const AppBarTheme(
-      backgroundColor: UiConstants.colorPrimary,
-      titleTextStyle: UiConstants.textStyleAppBarTitleTextStyle,
-      iconTheme: IconThemeData(color: UiConstants.colorBackground)),
+    backgroundColor: UiConstants.colorPrimary,
+    titleTextStyle: UiConstants.textStyleAppBarTitleTextStyle,
+    iconTheme: IconThemeData(color: UiConstants.colorBackground),
+  ),
 );

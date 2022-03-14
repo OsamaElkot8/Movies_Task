@@ -1,10 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:movies_task/main.dart';
+import 'package:movies_task/models/entities/user/user.dart';
 import 'package:movies_task/models/utilities/shared_preferences/shared_preferences.dart';
+import 'package:movies_task/repository/network/api_response/api_response.dart';
 import 'package:movies_task/repository/network/authentication/authentication_api_client.dart';
+import 'package:movies_task/repository/network/network_constants.dart';
+import 'package:movies_task/repository/network/user/user_client/user_api_client.dart';
+import 'package:movies_task/ui/components/buttons/default_colorless_button.dart';
+import 'package:movies_task/ui/components/buttons/default_text_button.dart';
 import 'package:movies_task/ui/components/custom_single_child_scroll_view.dart';
-import 'package:movies_task/ui/components/default_text_button.dart';
-import 'package:movies_task/ui/components/default_text_field.dart';
+import 'package:movies_task/ui/components/text_fields/default_text_field.dart';
+import 'package:movies_task/ui/screens/home/home_screen.dart';
 import 'package:movies_task/ui/ui_constants.dart';
 import 'package:movies_task/ui/ui_helper.dart';
 
@@ -26,8 +32,9 @@ class _LoginScreenState extends State<LoginScreen> {
 
   final AuthenticationApiClient _authenticationApiClient =
       AuthenticationApiClient();
+  final UserApiClient _userApiClient = UserApiClient();
 
-  final TextEditingController _emailController = TextEditingController(),
+  final TextEditingController _usernameController = TextEditingController(),
       _passwordController = TextEditingController();
 
   final _formKey = GlobalKey<FormState>();
@@ -35,6 +42,12 @@ class _LoginScreenState extends State<LoginScreen> {
   final SharedPreferences _localStorage = SharedPreferences.instance;
 
   String? _authenticationError;
+
+  bool _isLoginButtonLoading = false;
+
+  void _loginButtonLoadingOn() => setState(() => _isLoginButtonLoading = true);
+  void _loginButtonLoadingOff() =>
+      setState(() => _isLoginButtonLoading = false);
 
   @override
   Widget build(BuildContext context) {
@@ -63,9 +76,9 @@ class _LoginScreenState extends State<LoginScreen> {
                   height: 40.0,
                 ),
                 DefaultTextField(
-                  controller: _emailController,
-                  label: appLocalizations(context).email,
-                  validator: _emailValidator,
+                  controller: _usernameController,
+                  label: appLocalizations(context).username,
+                  validator: _usernameValidator,
                 ),
                 const SizedBox(
                   height: 40.0,
@@ -85,8 +98,15 @@ class _LoginScreenState extends State<LoginScreen> {
                   child: DefaultTextButton(
                     onPressed: _loginButtonOnPressed,
                     text: appLocalizations(context).login,
+                    isLoading: _isLoginButtonLoading,
                   ),
                 ),
+                const SizedBox(
+                  height: 40.0,
+                ),
+                DefaultColorlessButton(
+                    onPressed: _skipButtonOnPressed,
+                    child: Text(appLocalizations(context).skip)),
                 const SizedBox(
                   height: 20.0,
                 ),
@@ -99,7 +119,7 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
-  String? _emailValidator(String? value) {
+  String? _usernameValidator(String? value) {
     if (_authenticationError != null) {
       return UiConstants.stringEmpty;
     } else {
@@ -111,7 +131,89 @@ class _LoginScreenState extends State<LoginScreen> {
     return _authenticationError;
   }
 
-  _loginButtonOnPressed() async {}
+  void _loginButtonOnPressed() async {
+    _loginButtonLoadingOn();
+
+    ApiResponse<String> _requestTokenResult = await _authenticationApiClient
+        .createRequestToken(apiKey: NetworkConstants.apiKey);
+
+    if (_requestTokenResult.status != ApiStatus.success) {
+      _loginButtonLoadingOff();
+      _setValidationError(error: _requestTokenResult.errors?.values.first);
+      return;
+    }
+
+    ApiResponse<User> _validateLoginResult =
+        await _validateLogin(requestToken: _requestTokenResult.data!);
+
+    if (_validateLoginResult.status != ApiStatus.success) {
+      _loginButtonLoadingOff();
+      _setValidationError(error: _validateLoginResult.errors?.values.first);
+      return;
+    }
+
+    ApiResponse<String> _createSessionResult =
+        await _createSession(requestToken: _validateLoginResult.data!.name!);
+
+    if (_createSessionResult.status != ApiStatus.success) {
+      _loginButtonLoadingOff();
+      _setValidationError(error: _createSessionResult.errors?.values.first);
+      return;
+    }
+
+    ApiResponse<User> _accountDetailsResult =
+        await _userApiClient.getAccountDetails(
+            sessionId: _createSessionResult.data!,
+            apiKey: NetworkConstants.apiKey);
+
+    if (_accountDetailsResult.status != ApiStatus.success) {
+      _loginButtonLoadingOff();
+      _setValidationError(error: _accountDetailsResult.errors?.values.first);
+      return;
+    }
+
+    await _localStorage.setUserLoggedInSessionId(_createSessionResult.data!);
+    await _localStorage
+        .setUserLoggedInAccountId(_accountDetailsResult.data!.id);
+    _navigateToHomeScreen();
+  }
+
+  Future<ApiResponse<User>> _validateLogin(
+      {required String requestToken}) async {
+    String _username = _usernameController.text,
+        _password = _passwordController.text;
+
+    Map<String, dynamic> _validateLoginBody = {
+      NetworkConstants.keyUsername: _username,
+      NetworkConstants.keyPassword: _password,
+      NetworkConstants.keyRequestToken: requestToken
+    };
+    ApiResponse<User> _result = await _authenticationApiClient.validateLogin(
+        body: _validateLoginBody, apiKey: NetworkConstants.apiKey);
+
+    return _result;
+  }
+
+  Future<ApiResponse<String>> _createSession(
+      {required String requestToken}) async {
+    Map<String, dynamic> _createSessionBody = {
+      NetworkConstants.keyRequestToken: requestToken
+    };
+    ApiResponse<String> _result = await _authenticationApiClient.createSession(
+        body: _createSessionBody, apiKey: NetworkConstants.apiKey);
+
+    return _result;
+  }
+
+  void _setValidationError({String? error}) {
+    _authenticationError = error;
+    _validateTextFields();
+  }
+
+  void _skipButtonOnPressed() => _navigateToHomeScreen();
+
+  void _navigateToHomeScreen() => Navigator.pushNamedAndRemoveUntil(
+      navigatorKey.currentContext!, HomeScreen.id, (_) => false);
 
   bool _validateTextFields() => _formKey.currentState!.validate();
 }

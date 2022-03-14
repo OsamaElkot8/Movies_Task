@@ -1,5 +1,6 @@
 import 'package:json_annotation/json_annotation.dart';
 import 'package:movies_task/repository/network/network_constants.dart';
+import 'package:movies_task/ui/ui_constants.dart';
 
 part 'movie.g.dart';
 
@@ -14,4 +15,11 @@ class Movie {
 
   factory Movie.fromJson(Map<String, dynamic> json) => _$MovieFromJson(json);
   Map<String, dynamic> toJson() => _$MovieToJson(this);
+
+  String get posterURL {
+    if (posterPath == null || posterPath!.isEmpty)
+      return UiConstants.stringEmpty;
+
+    return NetworkConstants.urlMoviePosterUrl + posterPath!;
+  }
 }

@@ -14,11 +14,16 @@ abstract class UserApiClient {
         (RequestOptions options, RequestInterceptorHandler _handler) async {
       SharedPreferences _localStorage = SharedPreferences.instance;
 
-      String token = await _localStorage.getUserLoggedInAccessToken();
+      String? token = await _localStorage.getUserLoggedInSessionId();
 
-      if (token.isNotEmpty) {
+      if (token != null) {
         options.headers["Authorization"] = 'Token ' + token;
         _handler.next(options);
       }
     })));
+
+  @GET(NetworkConstants.urlAccount)
+  Future<ApiResponse<User>> getAccountDetails(
+      {@Query(NetworkConstants.keySessionId) required String sessionId,
+      @Query(NetworkConstants.keyApiKey) required String apiKey});
 }
