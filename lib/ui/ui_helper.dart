@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class UIHelper {
@@ -38,7 +37,7 @@ class UIHelper {
           ),
           child: const Padding(
             padding: _indicatorPadding,
-            child: CupertinoActivityIndicator(),
+            child: CircularProgressIndicator(),
           ),
         ),
       ),

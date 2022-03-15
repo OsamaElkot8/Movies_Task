@@ -41,10 +41,16 @@ class DefaultTextButton extends StatelessWidget {
   Widget _childView(BuildContext context) {
     final ColorScheme _colorScheme = UIHelper.getColorScheme(context);
     final TextTheme _textTheme = UIHelper.getTextTheme(context);
+    const double _indicatorHeight = 16.0;
+    const double _indicatorWidth = 16.0;
 
     if (isLoading!) {
-      return CircularProgressIndicator(
-        color: _colorScheme.background,
+      return SizedBox(
+        height: _indicatorHeight,
+        width: _indicatorWidth,
+        child: CircularProgressIndicator(
+          color: _colorScheme.background,
+        ),
       );
     }
 
