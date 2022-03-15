@@ -5,6 +5,7 @@ class UiConstants {
   static const Color colorSecondary = Colors.grey;
   static const Color colorOnSecondary = Color(0xffeeeeee);
   static const Color colorBackground = Colors.white;
+  static const Color colorError = Colors.red;
   static const Color colorTransparent = Colors.transparent;
 
   static const TextStyle textStyleHeadline2 = TextStyle(

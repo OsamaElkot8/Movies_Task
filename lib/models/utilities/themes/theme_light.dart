@@ -8,7 +8,8 @@ ThemeData lightTheme = ThemeData.light().copyWith(
       primary: UiConstants.colorPrimary,
       secondary: UiConstants.colorSecondary,
       onSecondary: UiConstants.colorOnSecondary,
-      background: UiConstants.colorBackground),
+      background: UiConstants.colorBackground,
+      error: UiConstants.colorError),
   textTheme: const TextTheme(
       bodyText1: UiConstants.textStyleBodyText1,
       bodyText2: UiConstants.textStyleBodyText2,

@@ -7,8 +7,13 @@ class DefaultRoundButton extends StatelessWidget {
   final Widget child;
   final void Function()? onPressed;
   final EdgeInsetsGeometry? padding;
+  final Color? backgroundColor;
   const DefaultRoundButton(
-      {Key? key, required this.child, this.onPressed, this.padding})
+      {Key? key,
+      required this.child,
+      this.onPressed,
+      this.padding,
+      this.backgroundColor})
       : super(key: key);
 
   @override
@@ -17,7 +22,7 @@ class DefaultRoundButton extends StatelessWidget {
       onTap: onPressed,
       child: ClipOval(
         child: Container(
-          color: UIHelper.getColorScheme(context).primary,
+          color: backgroundColor ?? UIHelper.getColorScheme(context).primary,
           padding: padding ?? _defaultContainerPadding,
           child: child,
         ),

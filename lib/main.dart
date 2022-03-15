@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:movies_task/models/bloc/account_blocs/watchlist_bloc/watchlist_bloc.dart';
 import 'package:movies_task/models/bloc/movies_bloc/movies_bloc.dart';
 import 'package:movies_task/models/bloc/settings_bloc/settings_bloc.dart';
 import 'package:movies_task/models/bloc/settings_bloc/settings_bloc_state.dart';
@@ -12,6 +13,7 @@ import 'package:movies_task/models/utilities/themes/theme_dark.dart';
 import 'package:movies_task/models/utilities/themes/theme_light.dart';
 import 'package:movies_task/ui/screens/authentication/login_screen.dart';
 import 'package:movies_task/ui/screens/home/home_screen.dart';
+import 'package:movies_task/ui/screens/home/watchlist_screen/watchlist_screen.dart';
 import 'package:movies_task/ui/screens/splash_screen.dart';
 
 final GlobalKey<NavigatorState> navigatorKey =
@@ -35,6 +37,9 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider<MoviesBloc>(
           create: (ctx) => MoviesBloc(),
+        ),
+        BlocProvider<WatchlistBloc>(
+          create: (ctx) => WatchlistBloc(),
         )
       ],
       child: BlocBuilder<SettingsBloc, SettingsBlocState>(
@@ -58,7 +63,8 @@ class MyApp extends StatelessWidget {
           routes: {
             SplashScreen.id: (context) => const SplashScreen(),
             LoginScreen.id: (context) => const LoginScreen(),
-            HomeScreen.id: (context) => const HomeScreen()
+            HomeScreen.id: (context) => HomeScreen(),
+            WatchlistScreen.id: (context) => const WatchlistScreen(),
           },
         );
       }),

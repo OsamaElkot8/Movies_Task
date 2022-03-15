@@ -19,8 +19,8 @@ class SplashScreen extends StatelessWidget {
         child: Center(
           child: AnimatedTextKit(
             animatedTexts: [
-              TypewriterAnimatedText(appLocalizations(context).movies,
-                  textStyle: UIHelper.getTextTheme(context).headline1)
+              WavyAnimatedText(appLocalizations(context).movies,
+                  textStyle: UIHelper.getTextTheme(context).headline2)
             ],
             repeatForever: true,
           ),

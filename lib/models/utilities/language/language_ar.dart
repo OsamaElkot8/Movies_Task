@@ -59,4 +59,12 @@ class LanguageAr extends Languages {
   @override
   // TODO: implement failedToAdd
   String get failedToAdd => 'Failed to add';
+
+  @override
+  // TODO: implement watchlist
+  String get watchlist => 'Watchlist';
+
+  @override
+  // TODO: implement noWatchlistMoviesYet
+  String get noWatchlistMoviesYet => 'No watchlist movies yet';
 }

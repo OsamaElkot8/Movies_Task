@@ -6,6 +6,8 @@ import 'package:movies_task/models/bloc/movies_bloc/movies_bloc_event.dart';
 import 'package:movies_task/models/bloc/movies_bloc/movies_bloc_state.dart';
 import 'package:movies_task/models/entities/movie/movie.dart';
 import 'package:movies_task/ui/screens/home/movies_list_view/movie_view.dart';
+import 'package:movies_task/ui/screens/home/movies_list_view/watchlist_add_icon_view.dart';
+import 'package:movies_task/ui/ui_helper.dart';
 
 class MoviesListView extends StatelessWidget {
   MoviesListView({Key? key}) : super(key: key);
@@ -39,11 +41,7 @@ class MoviesListView extends StatelessWidget {
         }
 
         if (_snackBarMessage != null) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(_snackBarMessage),
-            ),
-          );
+          UIHelper.showSnackBarMessage(context, message: _snackBarMessage);
         }
       },
       builder: (context, state) {
@@ -69,7 +67,21 @@ class MoviesListView extends StatelessWidget {
           padding: _listViewPadding,
           controller: _scrollController
             ..addListener(() => _scrollControllerListener(context)),
-          itemBuilder: (context, index) => MovieView(movie: _movies[index]),
+          itemBuilder: (context, index) {
+            final Movie _singleMovie = _movies[index];
+            const double _positionedWatchListItemTop = 10.0;
+            const double _positionedWatchListItemRight = 10.0;
+
+            return Stack(
+              children: [
+                MovieView(movie: _singleMovie),
+                Positioned(
+                    top: _positionedWatchListItemTop,
+                    right: _positionedWatchListItemRight,
+                    child: WatchlistAddIconView(mediaId: _singleMovie.id))
+              ],
+            );
+          },
           separatorBuilder: (context, index) => const SizedBox(height: 20),
           itemCount: _movies.length,
         );

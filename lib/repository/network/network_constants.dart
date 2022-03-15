@@ -9,6 +9,7 @@ class NetworkConstants {
       '/authentication/token/validate_with_login';
   static const String urlAccount = '/account';
   static const String urlWatchList = '/watchlist';
+  static const String urlMovies = '/movies';
 
   static const String keyId = 'id';
   static const String keyPosterPath = 'poster_path';
@@ -30,7 +31,8 @@ class NetworkConstants {
 
   static const String apiKey = '31521ab741626851b73c684539c33b5a';
 
-  static const int success = 1;
+  static const int successWishlistAdd = 1;
+  static const int successWishlistRemove = 13;
 
   static const Map<String, String> requestHeader = {
     'Content-type': 'application/json;charset=utf-8'
