@@ -37,22 +37,15 @@ class _AuthenticationApiClient implements AuthenticationApiClient {
   Future<ApiResponse> createSession({required apiKey, required body}) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{r'api_key': apiKey};
-    final _headers = <String, dynamic>{
-      r'Accept': 'application/json',
-      r'Content-type': 'application/json'
-    };
-    _headers.removeWhere((k, v) => v == null);
+    final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
     _data.addAll(body);
     final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<ApiResponse>(Options(
-                method: 'POST',
-                headers: _headers,
-                extra: _extra,
-                contentType: 'application/json')
-            .compose(_dio.options, '/authentication/session/new',
-                queryParameters: queryParameters, data: _data)
-            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+        _setStreamType<ApiResponse>(
+            Options(method: 'POST', headers: _headers, extra: _extra)
+                .compose(_dio.options, '/authentication/session/new',
+                    queryParameters: queryParameters, data: _data)
+                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = ApiResponse.fromJson(_result.data!);
     return value;
   }
@@ -61,22 +54,16 @@ class _AuthenticationApiClient implements AuthenticationApiClient {
   Future<ApiResponse> validateLogin({required apiKey, required body}) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{r'api_key': apiKey};
-    final _headers = <String, dynamic>{
-      r'Accept': 'application/json',
-      r'Content-type': 'application/json'
-    };
-    _headers.removeWhere((k, v) => v == null);
+    final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
     _data.addAll(body);
     final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<ApiResponse>(Options(
-                method: 'POST',
-                headers: _headers,
-                extra: _extra,
-                contentType: 'application/json')
-            .compose(_dio.options, '/authentication/token/validate_with_login',
-                queryParameters: queryParameters, data: _data)
-            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+        _setStreamType<ApiResponse>(
+            Options(method: 'POST', headers: _headers, extra: _extra)
+                .compose(
+                    _dio.options, '/authentication/token/validate_with_login',
+                    queryParameters: queryParameters, data: _data)
+                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = ApiResponse.fromJson(_result.data!);
     return value;
   }

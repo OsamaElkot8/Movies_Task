@@ -44,13 +44,13 @@ class _DefaultTextFieldState extends State<DefaultTextField> {
     return TextFormField(
       focusNode: _focusNode,
       controller: widget.controller,
-      style: _textTheme.headline2,
+      style: _textTheme.bodyText1,
       decoration: InputDecoration(
           label: _labelView(context),
           suffixIcon: _suffixView(context),
           helperText: _helperText(),
           helperStyle:
-              _textTheme.bodyText1!.copyWith(color: _colorScheme.onSecondary)),
+              _textTheme.bodyText2!.copyWith(color: _colorScheme.onSecondary)),
       obscureText: _obscureText,
       validator: widget.validator,
       onChanged: widget.onChanged,
@@ -70,10 +70,10 @@ class _DefaultTextFieldState extends State<DefaultTextField> {
 
     return Text(
       widget.label!,
-      style: _textTheme.headline2!.copyWith(
+      style: _textTheme.headline4!.copyWith(
           color: _focusNode.hasFocus
               ? _colorScheme.primary
-              : _colorScheme.onSecondary),
+              : _colorScheme.secondary),
     );
   }
 

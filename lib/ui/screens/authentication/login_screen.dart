@@ -54,7 +54,6 @@ class _LoginScreenState extends State<LoginScreen> {
     final TextTheme _textTheme = UIHelper.getTextTheme(context);
 
     return Scaffold(
-      appBar: AppBar(),
       body: SafeArea(
         child: CustomSingleChildScrollView(
           padding: _screenPadding,
@@ -64,12 +63,12 @@ class _LoginScreenState extends State<LoginScreen> {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 const SizedBox(
-                  height: 10.0,
+                  height: 30.0,
                 ),
                 Text(
                   appLocalizations(context).welcomeBack +
                       UiConstants.stringExclamationMark,
-                  style: _textTheme.headline1,
+                  style: _textTheme.headline2,
                   textAlign: TextAlign.center,
                 ),
                 const SizedBox(
@@ -140,6 +139,7 @@ class _LoginScreenState extends State<LoginScreen> {
     if (_requestTokenResult.success == null || !_requestTokenResult.success!) {
       _loginButtonLoadingOff();
       _setValidationError(error: _requestTokenResult.statusMessage);
+
       return;
     }
 
@@ -150,6 +150,7 @@ class _LoginScreenState extends State<LoginScreen> {
         !_validateLoginResult.success!) {
       _loginButtonLoadingOff();
       _setValidationError(error: _validateLoginResult.statusMessage);
+
       return;
     }
 
@@ -160,6 +161,7 @@ class _LoginScreenState extends State<LoginScreen> {
         !_createSessionResult.success!) {
       _loginButtonLoadingOff();
       _setValidationError(error: _createSessionResult.statusMessage);
+
       return;
     }
 
@@ -170,12 +172,15 @@ class _LoginScreenState extends State<LoginScreen> {
     if (_accountDetailsResult.id == null) {
       _loginButtonLoadingOff();
       _setValidationError(error: _accountDetailsResult.statusMessage);
+
       return;
     }
 
     await _localStorage
         .setUserLoggedInSessionId(_createSessionResult.sessionId!);
+
     await _localStorage.setUserLoggedInAccountId(_accountDetailsResult.id!);
+
     _navigateToHomeScreen();
   }
 

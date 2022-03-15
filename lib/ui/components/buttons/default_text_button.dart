@@ -50,7 +50,8 @@ class DefaultTextButton extends StatelessWidget {
 
     return Text(
       text,
-      style: textStyle ?? _textTheme.bodyText2,
+      style: textStyle ??
+          _textTheme.bodyText2!.copyWith(color: _colorScheme.background),
     );
   }
 }

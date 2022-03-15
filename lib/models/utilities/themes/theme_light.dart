@@ -10,6 +10,7 @@ ThemeData lightTheme = ThemeData.light().copyWith(
       onSecondary: UiConstants.colorOnSecondary,
       background: UiConstants.colorBackground),
   textTheme: const TextTheme(
+      bodyText1: UiConstants.textStyleBodyText1,
       bodyText2: UiConstants.textStyleBodyText2,
       headline2: UiConstants.textStyleHeadline2,
       headline3: UiConstants.textStyleHeadline3,

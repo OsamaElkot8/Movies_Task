@@ -22,6 +22,8 @@ class UiConstants {
       fontSize: 16.0,
       fontFamily: 'WorkSans',
       fontWeight: FontWeight.bold);
+  static const TextStyle textStyleBodyText1 = TextStyle(
+      color: Colors.black, fontFamily: 'WorkSans', fontWeight: FontWeight.w600);
   static const TextStyle textStyleBodyText2 = TextStyle(
       color: colorPrimary, fontFamily: 'WorkSans', fontWeight: FontWeight.w600);
   static const TextStyle textStyleInputDecorationHintStyle = TextStyle(

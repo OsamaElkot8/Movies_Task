@@ -10,14 +10,17 @@ class MovieView extends StatelessWidget {
 
   final OutlinedBorder _cardShape = const RoundedRectangleBorder(
       borderRadius: BorderRadius.all(Radius.circular(20.0)));
+  final double _cardElevation = 12.0;
 
   @override
   Widget build(BuildContext context) {
     return Card(
       clipBehavior: Clip.antiAlias,
       shape: _cardShape,
+      elevation: _cardElevation,
       child: Column(
         mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           _movieImageView(),
           const SizedBox(
@@ -34,7 +37,7 @@ class MovieView extends StatelessWidget {
   }
 
   Widget _movieImageView() {
-    const double _imageWidth = 300.0;
+    const double _imageWidth = double.infinity;
     const double _imageHeight = 200.0;
 
     return Image.network(
@@ -53,20 +56,29 @@ class MovieView extends StatelessWidget {
   Widget _movieTitleView(BuildContext context) {
     TextTheme _textTheme = UIHelper.getTextTheme(context);
     String _title = movie.title ?? UiConstants.stringEmpty;
+    const EdgeInsets _textPadding = EdgeInsets.symmetric(horizontal: 10.0);
 
-    return Text(
-      _title,
-      style: _textTheme.headline3,
+    return Padding(
+      padding: _textPadding,
+      child: Text(
+        _title,
+        style: _textTheme.headline3,
+      ),
     );
   }
 
   Widget _movieOverviewView(BuildContext context) {
     TextTheme _textTheme = UIHelper.getTextTheme(context);
     String _overview = movie.overview ?? UiConstants.stringEmpty;
+    const EdgeInsets _textPadding =
+        EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0);
 
-    return Text(
-      _overview,
-      style: _textTheme.bodyText2,
+    return Padding(
+      padding: _textPadding,
+      child: Text(
+        _overview,
+        style: _textTheme.bodyText1,
+      ),
     );
   }
 }

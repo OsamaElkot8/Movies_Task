@@ -6,7 +6,6 @@ import 'package:movies_task/models/bloc/movies_bloc/movies_bloc_event.dart';
 import 'package:movies_task/models/bloc/movies_bloc/movies_bloc_state.dart';
 import 'package:movies_task/models/entities/movie/movie.dart';
 import 'package:movies_task/ui/screens/home/movies_list_view/movie_view.dart';
-import 'package:movies_task/ui/ui_constants.dart';
 
 class MoviesListView extends StatelessWidget {
   MoviesListView({Key? key}) : super(key: key);
@@ -18,7 +17,7 @@ class MoviesListView extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocConsumer<MoviesBloc, MoviesBlocState>(
       listener: (context, state) {
-        String _snackBarMessage = UiConstants.stringEmpty;
+        String? _snackBarMessage;
         switch (state.runtimeType) {
           case MoviesIdle:
           case MoviesLoading:
@@ -26,8 +25,8 @@ class MoviesListView extends StatelessWidget {
             break;
           case MoviesLoaded:
             final casted = state as MoviesLoaded;
-            final List<Movie> _movies = casted.movies;
-            if (_movies.isEmpty) {
+            final List<Movie> _moviesPerPage = casted.movies;
+            if (_moviesPerPage.isEmpty) {
               _snackBarMessage = appLocalizations(context).noMoreMovies;
             }
             break;
@@ -38,43 +37,42 @@ class MoviesListView extends StatelessWidget {
             _moviesBloc.isFetching = false;
             break;
         }
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(_snackBarMessage),
-          ),
-        );
-        return;
+
+        if (_snackBarMessage != null) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(_snackBarMessage),
+            ),
+          );
+        }
       },
       builder: (context, state) {
-        switch (state.runtimeType) {
-          case MoviesIdle:
-          case MoviesLoading:
-            return const Center(child: CircularProgressIndicator());
-          case MoviesLoaded:
-            final casted = state as MoviesLoaded;
-            MoviesBloc _moviesBloc = context.read<MoviesBloc>();
-            _moviesBloc.isFetching = false;
+        if (state is MoviesIdle || state is MoviesLoading && _movies.isEmpty) {
+          return const Center(child: CircularProgressIndicator());
+        } else if (state is MoviesLoaded) {
+          MoviesBloc _moviesBloc = context.read<MoviesBloc>();
+          _moviesBloc.isFetching = false;
 
-            ScaffoldMessenger.of(context).hideCurrentSnackBar();
+          ScaffoldMessenger.of(context).hideCurrentSnackBar();
 
-            final List<Movie> _moviesPerPage = casted.movies;
-            if (_moviesPerPage.isEmpty) {
-              _movies.addAll(_moviesPerPage);
-            }
-            return ListView.separated(
-              controller: _scrollController
-                ..addListener(() => _scrollControllerListener(context)),
-              itemBuilder: (context, index) => MovieView(movie: _movies[index]),
-              separatorBuilder: (context, index) => const SizedBox(height: 20),
-              itemCount: _movies.length,
-            );
-          case MoviesLoadingError:
-          default:
-            final casted = state as MoviesLoadingError;
-            return Center(
-              child: _fetchMoviesErrorView(context, error: casted.reason!),
-            );
+          final List<Movie> _moviesPerPage = state.movies;
+          _movies.addAll(_moviesPerPage);
+        } else if (state is MoviesLoadingError && _movies.isEmpty) {
+          return Center(
+            child: _fetchMoviesErrorView(context, error: state.reason!),
+          );
         }
+
+        const EdgeInsets _listViewPadding = EdgeInsets.all(20.0);
+
+        return ListView.separated(
+          padding: _listViewPadding,
+          controller: _scrollController
+            ..addListener(() => _scrollControllerListener(context)),
+          itemBuilder: (context, index) => MovieView(movie: _movies[index]),
+          separatorBuilder: (context, index) => const SizedBox(height: 20),
+          itemCount: _movies.length,
+        );
       },
     );
   }

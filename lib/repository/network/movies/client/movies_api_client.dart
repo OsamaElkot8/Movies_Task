@@ -7,7 +7,9 @@ part 'movies_api_client.g.dart';
 
 @RestApi(baseUrl: NetworkConstants.urlBase)
 abstract class MoviesApiClient {
-  factory MoviesApiClient() => _MoviesApiClient(Dio());
+  factory MoviesApiClient() => _MoviesApiClient(Dio()
+    ..options.followRedirects = false
+    ..options.validateStatus = (status) => status! < 500);
 
   @GET(NetworkConstants.urlMovieNowPlaying)
   Future<MoviesApiResponse> getNowPlayingMovies(
