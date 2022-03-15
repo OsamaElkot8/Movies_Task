@@ -8,6 +8,7 @@ class NetworkConstants {
   static const String urlAuthenticationTokenValidateWithLogin =
       '/authentication/token/validate_with_login';
   static const String urlAccount = '/account';
+  static const String urlWatchList = '/watchlist';
 
   static const String keyId = 'id';
   static const String keyPosterPath = 'poster_path';
@@ -23,11 +24,15 @@ class NetworkConstants {
   static const String keyResult = 'results';
   static const String keyTotalPages = 'total_pages';
   static const String keyTotalResults = 'total_results';
+  static const String keyMediaType = 'media_type';
+  static const String keyMediaId = 'media_id';
+  static const String keyWatchlist = 'watchlist';
 
   static const String apiKey = '31521ab741626851b73c684539c33b5a';
 
+  static const int success = 1;
+
   static const Map<String, String> requestHeader = {
-    'Accept': 'application/json',
-    'Content-type': 'application/json'
+    'Content-type': 'application/json;charset=utf-8'
   };
 }

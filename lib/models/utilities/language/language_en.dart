@@ -47,4 +47,16 @@ class LanguageEn extends Languages {
   @override
   // TODO: implement noMoreMovies
   String get noMoreMovies => 'No more movies';
+
+  @override
+  // TODO: implement actionInProgress
+  String get actionInProgress => 'Action In Progress';
+
+  @override
+  // TODO: implement addedToWatchlist
+  String get addedToWatchlist => 'Added to Watchlist';
+
+  @override
+  // TODO: implement failedToAdd
+  String get failedToAdd => 'Failed to add';
 }

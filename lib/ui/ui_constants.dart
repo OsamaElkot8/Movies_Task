@@ -60,6 +60,9 @@ class UiConstants {
   static const String stringExclamationMark = '!';
   static const String stringColonSymbol = ':';
   static const String stringNewLine = '\n';
+  static const String stringLeftCurleyBrace = '{';
+  static const String stringRightCurleyBrace = '}';
+  static const String stringSlashSymbol = '/';
 
   static const String stringDefaultImagePlaceholderPath =
       'assets/images/image_placeholder.png';

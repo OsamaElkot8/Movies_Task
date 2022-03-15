@@ -9,6 +9,9 @@ abstract class Languages {
   String get loading;
   String get noMoreMovies;
   String get errorGettingMovies;
+  String get actionInProgress;
+  String get addedToWatchlist;
+  String get failedToAdd;
 }
 
 enum EnumLanguage { english, arabic }
